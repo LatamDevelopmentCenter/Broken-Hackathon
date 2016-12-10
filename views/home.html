@@ -1,0 +1,757 @@
+<nav class="row hide-on-med-and-down  red lighten-1" style="margin-bottom:0px;">
+    <div class="nav-wrapper">
+        <div class="col s3 offset-s4 center">
+            <a class="breadcrumb" ng-show="Home.step > 0 && Home.step < 5" ng-click="Home.step = 1 ">Sobre você</a>
+            <a class="breadcrumb" ng-show="Home.step > 1 && Home.step < 5" ng-click="Home.step = 2">Perfil</a>
+            <a class="breadcrumb" ng-show="Home.step > 3 && Home.step < 5" ng-click="Home.step = 4">Prova</a>
+        </div>
+      
+    </div>
+</nav>
+<div id="spotify-tab" class="spotify card-panel hide-on-med-and-down" ng-show="Home.spotify">
+    <iframe src="https://embed.spotify.com/?uri=spotify%3Auser%3Acpvbruno%3Aplaylist%3A7784bBZRZBteWOtutqAUVi" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+</div>
+<div id="spotify-control" class="spotify card-panel hide-on-med-and-down" style="left:28px;" ng-click="Home.spotifyChange()">
+    <img src="assets/images/spotify.png" width="30px" class="left" /> <span class="right" style="margin-top:6px;">Playlist Spotify: Hackathon</span>
+</div>
+<form name="Home.signupForm" data-ng-submit="Home.submitSignupForm(Home.form)">
+
+    <section class="full-height" ng-show="Home.step == 0">
+        <div id="date-box" class=" white teal-text right col s12 m2 hide-on-med-and-down">
+            {{Home.eventDate}}
+        </div>
+        <div id="date-box" class=" white teal-text center col s12 hide-on-med-and-up">
+            {{Home.eventDate}}
+        </div>
+
+        <!--<div id="terms-box" class=" white teal-text left col s12 m2">
+    <a href="#!">{{Home.terms}}</a>
+  </div>-->
+        <div id="main-content" class="row">
+            <div id="logo" class="col s12 m6 offset-m3">
+            </div>
+            <div id="main-description" class="white-text col s12 m6 offset-m3 t-center m-top-s">
+                A Johnson & Johnson do Brasil, líder no mercado de cuidados com a saúde, tem a inovação em seu DNA, e é por isso que inovamos também na forma de encontrar novas pessoas para trabalhar no nosso centro regional de desenvolvimento de software (LDC – LATAM
+                Development Center). Venha trabalhar com a gente e fazer parte de algo grandioso, começando pelo Hackathon: um dia inteiro de programação, pizza e música, descontraído e criativo.
+            </div>
+            <div id="bubbles-container" class="col s12 m6 offset-m3 center m-top-s">
+                <div class="bubble red wow bounceIn  {{x.color + ' ' + x.textColor }}" data-wow-delay="{{x.dataDelay}}" ng-repeat="x in Home.bubbles">{{x.text}}</div>
+            </div>
+            <div class="col s12 m4 offset-m4 center m-top-s card p-all-s">
+                <p class="center no-margin no-padding" style="margin:0px;">
+                    <input type="checkbox" id="chkTerms" ng-model="Home.startTerms" />
+                    <label for="chkTerms">Aceito os <a style="text-decoration:underline;" ng-click="Home.showTerms()">Termos de uso</a></label>
+                </p>
+            </div>
+            <div class="col s12 m4 offset-m4 center p-all-s card ">
+
+                <a class="btn-large center  col s12   teal accent-4 teal accent-4 right" ng-click="Home.nextStep()"> Inscreva-se</a>
+                <div class="clearfix"></div>
+                <div style="margin-top:30px;" class="hide-on-med-and-up">
+                  <a ng-click="Home.showFaq()">FAQ</a>
+                  <a> | </a>
+                    <a ng-click="Home.showPolicy()">Política de Privacidade</a>
+                    <a> | </a>
+                    <a ng-click="Home.showTerms()">Termos de Uso</a>
+                    <br>
+                    <br>
+                    <p class="center">Dúvidas entrar em contato por: RA-CONBR-Programa-Z@ITS.JNJ.com</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="full-height steps wow bounceIn" id="step-1" ng-show="Home.step == 1">
+        <h3 class="font-1 white-text center">O que melhor te representa?</h3>
+        <div class="row">
+            <div class="col s12 m6 offset-m3 center">
+                <a class="btn-large blue" ng-click="Home.form.sexo = 'masculino'" ng-class="{sexSelected: Home.form.sexo == 'masculino'}">Masculino</a>
+                <a class="btn-large pink" ng-click="Home.form.sexo = 'feminino'" ng-class="{sexSelected: Home.form.sexo == 'feminino'}">Feminino</a>
+            </div>
+            <div class="col s12 m-top-l center">
+                <div class="col s12 m4 offset-m1 box card" ng-drop="true" ng-drop-success="onDropLike($data,$event)">
+                    <h4 class="white-text hide-on-med-and-down">Arraste 3 ícones que te representam</h4>
+                    <h4 class="white-text hide-on-med-and-up">Clique em 3 ícones que te representam</h4>
+                    <img ng-repeat="y in droppedLike" ng-click="removeDroppedLike(y)" class="bubble-images" width="100%" height="100%" src="{{Home.peopleIconsPath + y.fileName}}" />
+                </div>
+                <div class="col s12 hide-on-med-and-up no-padding">
+                    <img ng-click="onDropLike(xx,null)" ng-repeat="xx in Home.peopleIcons" class="bubble-images bubble-little wow bounceIn " width="100%" height="100%" src="{{Home.peopleIconsPath + xx.fileName}}" data-wow-delay="{{xx.delay}}" />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col s12 m3 box card" ng-drop="true" ng-drop-success="onDropDislike($data,$event)">
+                    <h4 class="white-text hide-on-med-and-down">Arraste 3 ícones que não te representam</h4>
+                    <h4 class="white-text hide-on-med-and-up">Clique em 3 ícones que não te representam</h4>
+                    <img ng-repeat="z in droppedDislike" ng-click="removeDroppedDislike(z)" class="bubble-images" width="100%" height="100%" src="{{Home.peopleIconsPath + z.fileName}}" />
+
+                </div>
+                <div class="col s12 hide-on-med-and-up no-padding">
+                    <img ng-repeat="xxx in Home.peopleIcons" ng-click="onDropDislike(xxx,null)" class="bubble-images bubble-little wow bounceIn hide-on-med-and-up" width="100%" height="100%" src="{{Home.peopleIconsPath + xxx.fileName}}" data-wow-delay="{{xxx.delay}}" />
+                </div>
+                <div class="col s12 m3 box card" ng-drop="true" ng-drop-success="onDropMain($data,$event)">
+
+                    <h4 class="white-text hide-on-med-and-down">Arraste 1 ícone que mais te representa</h4>
+                    <h4 class="white-text hide-on-med-and-up">Clique em 1 ícone que mais te representa</h4>
+                    <img ng-repeat="h in droppedMain" ng-click="removeDroppedMain(h)" class="bubble-images" width="100%" height="100%" src="{{Home.peopleIconsPath + h.fileName}}" />
+
+
+                </div>
+                <div class="col s12 hide-on-med-and-up no-padding">
+                    <img ng-repeat="xxxx in Home.peopleIcons" ng-click="onDropMain(xxxx,null)" class="bubble-images bubble-little wow bounceIn hide-on-med-and-up" width="100%" height="100%" src="{{Home.peopleIconsPath + xxxx.fileName}}" data-wow-delay="{{xxxx.delay}}" />
+                </div>
+            </div>
+
+            <hr class="col s12 m-top-m">
+            <div class="col s12 m10 offset-m1 center hide-on-med-and-down">
+
+                <img ng-drag="true" ng-drag-data="{{x}}" ng-drag-success="onDragComplete($data,$event)" ng-center-anchor="true" ng-repeat="x in Home.peopleIcons" class="bubble-images wow bounceIn" width="100%" height="100%" src="{{Home.peopleIconsPath + x.fileName}}"
+                    data-wow-delay="{{x.delay}}" />
+
+            </div>
+            <div class=" input-field col s12 m8 offset-m2 m-top-m card ">
+                <input data-ng-model="Home.form.reason" type="text" class="validate c-count" placeholder="Explique suas escolhas (Por que escolheu estes icones?)" length="200">
+            </div>
+            <div class="col s12 m6 offset-m3 center m-top-m ">
+                <a class="btn-large" ng-click="Home.nextStep()">Próximo</a>
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </section>
+    <section class="full-height steps wow bounceInRight" data-wow-delay="0.2s" data-wow-duration="1s" id="step-2" ng-show="Home.step > 1 && Home.step < 4">
+        <form>
+            <h4 class="font-1 white-text center">Queremos te conhecer</h4>
+            <div class="row m-top-m">
+                <div class="col s12 m6 offset-m3">
+                    <div class="col s12 m10 card-panel offset-m1 p-all-m ">
+                        <div class="center">
+                            <div class="col s12 m8 offset-m2">
+                                <img src="assets/images/boy.png" alt="" class="circle responsive-img" ng-show="Home.form.sexo == 'masculino' && Home.form.picture == null">
+                                <img src="assets/images/girl.png" alt="" class="circle responsive-img" ng-show="Home.form.sexo == 'feminino' && Home.form.picture == null">
+                                <img src="{{Home.form.picture}}" alt="" class="circle responsive-img profile-picture" width="200px" height="200px" ng-show="Home.form.picture != null">
+                            </div>
+
+                            <div class="input-field col s12 m-top-sh" ng-show="showFace">
+                                <a class="face-button white-text " ng-show="showFace" ng-click="IntentLogin()">Importar do facebook</a>
+                                <p class="center">(É necessário habilitar os popups do navegador)</p>
+                            </div>
+                        </div>
+                        <div class="m-top-s">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" id="name" data-ng-model="Home.form.name" type="text" class="validate" placeholder="Nome completo *">
+
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">phone</i>
+                                <input id="icon_telephone" data-ng-model="Home.form.cel" type="tel" class="validate">
+                                <label for="icon_telephone">Celular</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">email</i>
+                                <input id="icon_telephone" data-ng-model="Home.form.email" type="email" class="validate">
+                                <label for="icon_telephone">Email *</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="txtDate" class="datepicker" materialize-date-picker data-ng-model="Home.form.date" placeholder="Data de nascimento *">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col s12 m3">
+                    <div class="card-panel p-all-m col s12   wow bounceInRight" ng-show="Home.step == 3">
+                        <h4>O que gostaria de nos contar sobre você? *</h4>
+
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">mode_edit</i>
+                            <textarea id="icon_prefix2" data-ng-model="Home.form.freeText" class="materialize-textarea" placeholder="Nos conte um pouco do que você gosta de fazer, no que gostaria de trabalhar..."></textarea>
+                            <!--<label for="icon_prefix2">Nos conte um pouco do que você gosta de fazer, no que gostaria de trabalhar...</label>-->
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">code</i>
+                            <input id="icon_prefix" data-ng-model="Home.form.github" type="text" class="validate">
+                            <label for="icon_prefix">Github</label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col s12 m6 offset-m3 center ">
+                <a class="btn-large" ng-click="Home.step = Home.step - 1">Anterior</a>
+                <a class="btn-large" ng-click="Home.nextStep()">Próximo</a>
+            </div>
+            <br>
+            <br>
+
+        </form>
+    </section>
+
+    <section class="row full-height steps wow bounceIn " data-wow-delay="0.2s" data-wow-duration="1s" id="step-3" ng-show="Home.step == 4">
+
+        <div class="col s12 m6 offset-m3">
+            <div class="card horizontal">
+                <div class="card-image">
+                    <img src="assets/images/boy.png" alt="" class="circle responsive-img" ng-show="Home.form.sexo == 'masculino' && Home.form.picture == null">
+                    <img src="assets/images/girl.png" alt="" class="circle responsive-img" ng-show="Home.form.sexo == 'feminino' && Home.form.picture == null">
+                    <img src="{{Home.form.picture}}" alt="" class="circle responsive-img" width="200px" height="200px" ng-show="Home.form.picture != null">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <h4>{{Home.form.name}}</h4>
+                        <p>{{Home.form.email}}</p>
+                    </div>
+                    <div class="card-action">
+                        <p class="col s7 m7 l7" style="margin:0px;">{{Home.form.cel}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 offset-m3">
+
+
+            <span class="col s12  orange lighten-1 white-text p-all-s" ng-show="Home.form.superior == true">* Esta vaga é somente para não formados </span>
+            <br ng-show="Home.form.superior == true">
+            <span class="col s12  orange lighten-1 white-text p-all-s" ng-show="(Home.form.halfSuperior == false && Home.form.isSuperior == true) || (Home.form.halfSuperior == null && Home.form.isSuperior == true)">* Esta vaga é somente para candidatos cursando até a metade do curso superior ou que não tenham iniciado ainda :'(</span>
+
+
+            <div class="col s12 card-panel p-all-m">
+                <div class="row">
+                    <div class="input-field col s12 m12 ">
+                        <p class="">Tem formação técnica?</p>
+                    </div>
+                    <div class="input-field col s12 m12 ">
+                        <div class="switch col s12 center">
+                            <label class="col ">
+                          Não
+                          <input type="checkbox" data-ng-model="Home.form.technician">
+                          <span class="lever"></span>
+                          Sim
+                        </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m12 ">
+                        <p class="">Tem formação superior?</p>
+                    </div>
+                    <div class="input-field col s12 m12 ">
+                        <div class="switch col s12 center">
+                            <label class="col ">
+                        Não
+                        <input type="checkbox" data-ng-model="Home.form.superior">
+                        <span class="lever"></span>
+                        Sim
+                      </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m12 ">
+                        <p class="">Está cursando o ensino superior?</p>
+                    </div>
+                    <div class="input-field col s12 m12 ">
+                        <div class="switch col s12 center">
+                            <label class="col ">
+                        Não
+                        <input type="checkbox" data-ng-model="Home.form.isSuperior">
+                        <span class="lever"></span>
+                        Sim
+                      </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="row" ng-show="Home.form.isSuperior">
+                    <div class="input-field col s12 m12 ">
+                        <p class="">Caso esteja cursando ensino superior, Você está cursando a primeira metade do curso?</p>
+                    </div>
+                    <div class="input-field col s12 m12 ">
+                        <div class="switch col s12 center">
+                            <label class="col ">
+                        Não
+                        <input type="checkbox" data-ng-model="Home.form.halfSuperior">
+                        <span class="lever"></span>
+                        Sim
+                      </label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+
+                <br>
+                <div class="input-field col s12">
+                    <select class="browser-default" data-ng-model="Home.form.testPlace">
+    <option value="" disabled selected>Local da prova</option>
+    <option value="ETEP Esplanada">ETEP Esplanada</option>
+  </select>
+                </div>
+                <div class="input-field col s12" ng-show="Home.form.technician == true">
+                    <select class="browser-default" data-ng-model="Home.form.school">
+  <option value="" disabled selected>Escola de formação técnica</option>
+  <option value="ETEP">ETEP</option>
+  <option value="UNIVAP">UNIVAP</option>
+  <option value="Bilac">Bilac</option>
+  <option value="Colégio Joseense">Colégio Joseense</option>
+  <option value="ETEC">ETEC</option>
+  <option value="Ecompo">Ecompo</option>
+<option value="Ideia">Ideia</option>
+<option value="Senac">Senac</option>
+<option value="Colégio Opção">Colégio Opção</option>
+  <option value="Outra">Outra</option>
+</select>
+                </div>
+                <div class="input-field col s12 m-top-s" ng-show="Home.form.school == 'Outra'">
+                    <input id="outro" type="text" class="validate" data-ng-model="Home.form.schoolOther" placeholder="Outra Escola (Caso a sua não esteja na lista)">
+                    <label for="outro">Outra</label>
+                </div>
+                <div class="input-field col s12" ng-show="Home.form.technician == true">
+                    <select class="browser-default" data-ng-model="Home.form.course">
+  <option value="" disabled selected>Formação técnica</option>
+  <option value="Informática">Informática</option>
+  <option value="Web Design">Web Design</option>
+    <option value="Mecatronica">Mecatrônica</option>
+  <option value="Redes">Redes</option>
+  <option value="Outra">Outra</option>
+</select>
+
+                </div>
+                <div class="input-field col s12 m-top-s" ng-show="Home.form.course == 'Outra'">
+                    <input data-ng-model="Home.form.courseOther" type="text" class="validate" placeholder="Outra Formação (Caso a sua não esteja na lista)">
+
+                </div>
+                <div class="input-field col s12">
+                    <select multiple data-ng-model="Home.form.language">
+      <option value="" disabled selected>Selecione 1 ou mais opções</option>
+      <option value="Inglês">Inglês</option>
+      <option value="Espanhol">Espanhol</option>
+    </select>
+                    <label>Idiomas</label>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col s12 m6 offset-m3 center m-top-m">
+            <a class="btn-large" ng-click="Home.step = Home.step - 1">Anterior</a>
+            <a class="btn-large" ng-click="Home.nextStep()" name="action">Finalizar</a>
+
+        </div>
+        <div class="clearfix"></div>
+
+
+
+    </section>
+
+
+
+    <section class="row full-height steps wow bounceInUp" data-wow-delay="0.2s" data-wow-duration="1s" id="step-4" ng-show="Home.step == 5">
+        <div class="col s12 m6 offset-m3 m-top-l">
+            <div id="logo" class="col s12" style="margin-top:0px;">
+            </div>
+            <h4 class="font-1 white-text center">Parabéns!  Você já está participando do processo seletivo.</h4>
+        </div>
+        <div class="col s12 m6 offset-m3 center card">
+            <h5>
+            Seu código de inscrição é: <br>
+            <b>{{Home.form.uuid}}</b></h5>
+            <p><b>Local escolhido:</b> {{Home.form.testPlace}}</p>
+            <p><b>Data:</b> 03/12/2016</p>
+            <p><b>Horário:</b> 10AM</p>
+            <p><b>Dúvidas entrar em contato por: RA-CONBR-Programa-Z@ITS.JNJ.com</b></p>
+            <a class="btn btn-default" onclick="window.print();">Imprimir</a>
+            <br>
+            <br>
+        </div>
+
+        <div class="clearfix"></div>
+
+
+
+    </section>
+</form>
+
+<div class="overlay-loader" ng-show="Home.loading">
+    <div class="card loader">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Structure -->
+
+<div id="modalLog" class="modal">
+    <div class="modal-content">
+        <p>{{Home.message}}</p>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+    </div>
+</div>
+<div id="modalPolicy" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <p><strong>Pol&iacute;tica de privacidade para </strong><strong>Hackathon LDC</strong></p>
+        <p><span style='font-weight: 400;'>Todas as suas informa&ccedil;&otilde;es pessoais recolhidas, ser&atilde;o usadas para o ajudar a tornar a sua visita no nosso site o mais produtiva e agrad&aacute;vel poss&iacute;vel.</span></p>
+        <p><span style='font-weight: 400;'>A garantia da confidencialidade dos dados pessoais dos utilizadores do nosso site &eacute; importante para o Hackathon LDC.</span></p>
+        <p><span style='font-weight: 400;'>Todas as informa&ccedil;&otilde;es pessoais relativas a membros, assinantes, clientes ou visitantes que usem o Hackathon LDC ser&atilde;o tratadas em concord&acirc;ncia com a Lei da Prote&ccedil;&atilde;o de Dados Pessoais de 26 de outubro de 1998 (Lei n.&ordm; 67/98).</span></p>
+        <p><span style='font-weight: 400;'>A informa&ccedil;&atilde;o pessoal recolhida pode incluir o seu nome, e-mail, n&uacute;mero de telefone e/ou telem&oacute;vel, morada, data de nascimento e/ou outros.</span></p>
+        <p><span style='font-weight: 400;'>O uso do Hackathon LDC pressup&otilde;e a aceita&ccedil;&atilde;o deste Acordo de privacidade. A equipa do Hackathon LDC reserva-se ao direito de alterar este acordo sem aviso pr&eacute;vio. Deste modo, recomendamos que consulte a nossa pol&iacute;tica de privacidade com regularidade de forma a estar sempre atualizado.</span></p>
+        <p><strong>Os an&uacute;ncios</strong></p>
+        <p><span style='font-weight: 400;'>Tal como outros websites, coletamos e utilizamos informa&ccedil;&atilde;o contida nos an&uacute;ncios. A informa&ccedil;&atilde;o contida nos an&uacute;ncios, inclui o seu endere&ccedil;o IP (Internet Protocol), o seu ISP (Internet Service Provider, como o Sapo, Clix, ou outro), o browser que utilizou ao visitar o nosso website (como o Internet Explorer ou o Firefox), o tempo da sua visita e que p&aacute;ginas visitou dentro do nosso website.</span></p>
+        <p><strong>Os Cookies e Web Beacons</strong></p>
+        <p><span style='font-weight: 400;'>Utilizamos cookies para armazenar informa&ccedil;&atilde;o, tais como as suas prefer&ecirc;ncias pessoais quando visita o nosso website. Isto poder&aacute; incluir um simples popup, ou uma liga&ccedil;&atilde;o em v&aacute;rios servi&ccedil;os que providenciamos, tais como f&oacute;runs.</span></p>
+        <p><span style='font-weight: 400;'>Voc&ecirc; det&eacute;m o poder de desligar os seus cookies, nas op&ccedil;&otilde;es do seu browser, ou efetuando altera&ccedil;&otilde;es nas ferramentas de programas Anti-Virus, como o Norton Internet Security. No entanto, isso poder&aacute; alterar a forma como interage com o nosso website, ou outros websites. Isso poder&aacute; afetar ou n&atilde;o permitir que fa&ccedil;a logins em programas, sites ou f&oacute;runs da nossa e de outras redes.</span></p>
+        <p><strong>Liga&ccedil;&otilde;es a Sites de terceiros</strong></p>
+        <p><span style='font-weight: 400;'>O Hackathon LDC possui liga&ccedil;&otilde;es para outros sites, os quais, a nosso ver, podem conter informa&ccedil;&otilde;es / ferramentas &uacute;teis para os nossos visitantes. A nossa pol&iacute;tica de privacidade n&atilde;o &eacute; aplicada a sites de terceiros, pelo que, caso visite outro site a partir do nosso dever&aacute; ler a politica de privacidade do mesmo.</span></p>
+        <p><span style='font-weight: 400;'>N&atilde;o nos responsabilizamos pela pol&iacute;tica de privacidade ou conte&uacute;do presente nesses mesmos sites.</span></p>
+        <p>&nbsp;</p>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+    </div>
+</div>
+
+<div id="modalTerms" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Termos de Uso</h4>
+        <p><strong>Leia com aten&ccedil;&atilde;o:</strong><span style="font-weight: 400;"> ao iniciar o uso do website do </span><strong>Hackathon LDC </strong><span style="font-weight: 400;">e dos servi&ccedil;os disponibilizados por ele, voc&ecirc; concorda e estar&aacute; sujeito a todos os termos, pol&iacute;ticas e condi&ccedil;&otilde;es gerais descritas abaixo.</span></p>
+        <ol>
+            <li style="font-weight: 400;"><strong>Objeto</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">1.1 &nbsp;O </span><strong>Hackathon LDC </strong><span style="font-weight: 400;">&eacute; uma ferramenta online das inscri&ccedil;&otilde;es dos participantes do processo seletivo para t&eacute;cnicos provido pela </span><strong>Johnson &amp; Johnson do Brasil.</strong></p>
+        <p><span style="font-weight: 400;">1.2 &nbsp;O </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> possibilita a cadastramento do inscrito no processo seletivo, possui a op&ccedil;&atilde;o para importar informa&ccedil;&otilde;es do Facebook, acess&iacute;vel a partir do endere&ccedil;o </span>
+            <a href="https://ldchackathon.herokuapp.com/"><span style="font-weight: 400;">https://ldchackathon.herokuapp.com/</span></a><span style="font-weight: 400;">.</span></p>
+        <p>&nbsp;</p>
+        <ol start="2">
+            <li><strong> &nbsp;&nbsp;&nbsp;&nbsp;Propriedade</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">2.1 &nbsp;O Usu&aacute;rio concorda que o uso do </span><strong>e-inscri&ccedil;&atilde;o</strong><span style="font-weight: 400;"> n&atilde;o significa, nem significar&aacute;, aquisi&ccedil;&atilde;o de qualquer direito sobre o mesmo, n&atilde;o podendo explor&aacute;-lo comercialmente ou comercializ&aacute;-lo.</span></p>
+        <p>&nbsp;</p>
+        <ol start="3">
+            <li><strong> &nbsp;&nbsp;&nbsp;&nbsp;Servi&ccedil;o</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">3.1 &nbsp;Para utiliza&ccedil;&atilde;o do </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> solicitamos os dados de identifica&ccedil;&atilde;o para fins de procedimento com a inscri&ccedil;&atilde;o do processo seletivo</span></p>
+        <p><span style="font-weight: 400;">3.2 &nbsp;&Eacute; reservado a </span><strong>Johnson &amp; Johnson do Brasil</strong><span style="font-weight: 400;"> o direito de modificar o </span><strong>Hackathon LDC</strong><span style="font-weight: 400;">, acrescentar ou excluir funcionalidades, acrescentar servi&ccedil;os, alterar layout, etc, por qualquer motivo e sem aviso pr&eacute;vio, sem que isso implique qualquer responsabilidade em rela&ccedil;&atilde;o ao Usu&aacute;rio ou a terceiros.</span></p>
+        <p><span style="font-weight: 400;">3.4 &nbsp;As informa&ccedil;&otilde;es inseridas no </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> s&atilde;o de total responsabilidade do Usu&aacute;rio.</span></p>
+        <p><span style="font-weight: 400;">3.5 &nbsp;O Usu&aacute;rio se compromete a utilizar o </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> em conformidade com lei e regulamento local, estadual e nacional.</span></p>
+        <p><span style="font-weight: 400;">3.6 &nbsp;O Usu&aacute;rio se compromete a n&atilde;o utilizar o </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> para meios il&iacute;citos ou que prejudique interesse de terceiros, respeitando a &eacute;tica, a moral e os bons costumes.</span></p>
+        <p>&nbsp;</p>
+        <ol start="4">
+            <li><strong> &nbsp;&nbsp;&nbsp;&nbsp;Garantias e Responsabilidade</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">4.1 &nbsp;O uso do </span><strong>Hackathon LDC</strong><span style="font-weight: 400;"> &eacute; fornecido sem garantia impl&iacute;cita ou expressa quanto a erros, perda de informa&ccedil;&otilde;es ou qualquer outro evento causado pela m&aacute; utiliza&ccedil;&atilde;o por parte do Usu&aacute;rio.</span></p>
+        <p><span style="font-weight: 400;">4.2 &nbsp;A </span><strong>Johnson &amp; Johnson do Brasil</strong><span style="font-weight: 400;"> n&atilde;o garante que o </span><strong>Hackathon LDC </strong><span style="font-weight: 400;">atenda as necessidades particulares do usu&aacute;rio.</span></p>
+        <p><span style="font-weight: 400;">4.3 &nbsp;O Usu&aacute;rio declara estar ciente que a </span><strong>Johnson &amp; Johnson do Brasil</strong><span style="font-weight: 400;"> n&atilde;o tem, nem ter&aacute;, qualquer responsabilidade, perante ao Usu&aacute;rio ou a terceiros, pelos preju&iacute;zos, danos patrimoniais ou morais de qualquer natureza resultante da m&aacute; utiliza&ccedil;&atilde;o do </span><strong>e-inscri&ccedil;&atilde;o</strong>
+            <span style="font-weight: 400;">.</span>
+        </p>
+        <ol start="5">
+            <li><strong> &nbsp;&nbsp;&nbsp;&nbsp;Foro</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">5.1 &nbsp;As Partes desenvolver&atilde;o todos os esfor&ccedil;os no sentido de resolver, amigavelmente, todas as controv&eacute;rsias ou diverg&ecirc;ncias que, porventura, forem decorrentes deste Termo.</span></p>
+        <p>&nbsp;</p>
+        <ol start="6">
+            <li><strong> &nbsp;&nbsp;&nbsp;&nbsp;Disposi&ccedil;&otilde;es Finais</strong></li>
+        </ol>
+        <p><span style="font-weight: 400;">6.1 &nbsp;O Usu&aacute;rio concorda em receber, via e-mail, informativos do </span><strong>Hackathon LDC</strong><span style="font-weight: 400;">.</span></p>
+        <p><span style="font-weight: 400;">6.2 &nbsp;Os termos e condi&ccedil;&otilde;es poder&atilde;o ser atualizados e modificados a qualquer tempo, independente de notifica&ccedil;&atilde;o pr&eacute;via, cabendo ao Usu&aacute;rio manter-se atualizado atrav&eacute;s do endere&ccedil;o </span>
+            <a href="https://ldchackathon.herokuapp.com/"><span style="font-weight: 400;">https://ldchackathon.herokuapp.com/</span></a>
+        </p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+    </div>
+</div>
+
+
+<div id="modalFaq" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <p>&nbsp;</p>
+      <ul>
+          <li><strong>Onde está o material do ano anterior?</strong></li>
+      </ul>
+      <p>&nbsp;</p>
+      <ul>
+          <ul>
+              <ul>
+                  <li style="font-weight: 400;"><span style="font-weight: 400;"><a href="https://github.com/LatamDevelopmentCenter/hackathon-early-2016">Você pode acessar clicando aqui.</a></li>
+              </ul>
+          </ul>
+      </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong>O que &eacute; um hackathon?</strong></li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Por defini&ccedil;&atilde;o &eacute; a jun&ccedil;&atilde;o das palavras HACK e MARATHON. Basicamente &eacute; uma maratona de programa&ccedil;&atilde;o onde v&aacute;rias pessoas se juntam em equipes e resolvem diversos desafios onde suas habilidades e conhecimentos ser&atilde;o testados.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong>Quais s&atilde;o as etapas?</strong></li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Ser&atilde;o tr&ecirc;s: Prova te&oacute;rica, Hackathon e entrevistas.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong>Quando ocorre?</strong></li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">A prova ocorre no dia 03/12/2016 &agrave;s 10am (hor&aacute;rio de Bras&iacute;lia)</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong>Quem pode participar?</strong></li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <li style="font-weight: 400;"><span style="font-weight: 400;">Todas pessoas j&aacute; formadas em curso t&eacute;cnico que n&atilde;o tenha conclu&iacute;do o ensino superior. Aos que j&aacute; ingressaram no ensino superior, deve estar na primeira metade do curso.</span></li>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Sou de uma cidade muito distante, posso participar?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Voc&ecirc; at&eacute; pode participar, mas ter&aacute; que estar presente nas 3 etapas e precisar&aacute; se transportar por conta pr&oacute;pria. Tenha em mente que voc&ecirc; poder&aacute; ser convidado para trabalhar conosco no final da terceira etapa e morar em uma cidade muito longe de S&atilde;o Jos&eacute; dos Campos.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Posso participar mesmo sem saber programar?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Claro que sim! N&atilde;o ser&atilde;o s&oacute; suas habilidades em programa&ccedil;&atilde;o que ser&atilde;o levadas em considera&ccedil;&atilde;o.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Qual a dura&ccedil;&atilde;o de cada etapa?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">A prova ter&aacute; dura&ccedil;&atilde;o de 2 horas. A Hackathon vai durar por volta de 8h em um dia do final de semana. As entrevistas ainda ser&atilde;o definidas.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Teremos que formar grupos no dia da Hackathon?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Os grupos ser&atilde;o formados por n&oacute;s no dia da Hackathon com base no conhecimento de cada participante.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Que linguagens de programa&ccedil;&atilde;o, bancos de dados, etc. posso usar?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Qualquer uma. Vamos tentar deixar dispon&iacute;vel o maior n&uacute;mero de compiladores e softwares poss&iacute;veis.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Vai ter comida?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Sim! Um Hackathon n&atilde;o &eacute; um Hackathon sem comida a vontade. =)</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Sou vegetariano / tenho restri&ccedil;&otilde;es alimentares. Como devo fazer no dia?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Vamos perguntar para todos os participantes no dia da Hackathon, n&atilde;o se preocupe.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>S&oacute; os times bem colocados/vencedores que ser&atilde;o aprovados para a &uacute;ltima etapa?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">N&atilde;o! A Hackathon &eacute; s&oacute; uma maneira de avaliar todos voc&ecirc;s. </span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Haver&aacute; alguma premia&ccedil;&atilde;o ao final da Hackathon?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">O time que pontuar mais receber&aacute; uma premia&ccedil;&atilde;o simb&oacute;lica para todos seus integrantes.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Quem j&aacute; participou antes pode participar novamente?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Sim, desde que todos os crit&eacute;rios sejam seguidos.</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Acabei de come&ccedil;ar o curso t&eacute;cnico de inform&aacute;tica, tenho pouco conhecimento em inform&aacute;tica ainda, posso participar mesmo assim?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Claro. A prova &eacute; uma &oacute;tima maneira de testar seus conhecimentos. </span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <li><strong><strong>Onde ser&atilde;o localizadas as etapas?</strong></strong>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <ul>
+            <ul>
+                <ul>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Etapa 1: Em campus de faculdades parceiras: &ldquo;ETEP ou Col&eacute;gio Op&ccedil;&atilde;o&rdquo;</span></li>
+                    <li style="font-weight: 400;"><span style="font-weight: 400;">Etapa 2 e 3: Dentro do campus da JnJ</span></li>
+                </ul>
+            </ul>
+        </ul>
+        <p>&nbsp;</p>
+
+        <p>&nbsp;</p>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+    </div>
+</div>
